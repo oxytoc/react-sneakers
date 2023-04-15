@@ -1,9 +1,12 @@
-import Card from './components/Card';
+import { useEffect, useState } from 'react';
+import {
+  Routes, Route
+} from "react-router-dom";
+import axios from 'axios';
 import Header from './components/Header';
 import Drawer from './components/Drawer';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-
+import Home from './pages/Home';
+import Favorites from './pages/Favorites';
 
 
 
@@ -11,71 +14,95 @@ function App() {
 
   const [items, setItems] = useState([]);
   const [cartItems, setCartItems] = useState([]);
+  const [favorite, setFavorites] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [cartOpenned, setCartOpenned] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
 
   useEffect(() =>{
-    // fetch('https://642ffa0ec26d69edc887f702.mockapi.io/items').then(res =>{
-    //   return res.json();
-    // }).then(json=>{
-    //   setItems(json)
-    // });
+    
+    async function fetchData(){
+      const cartItemsResponse = await axios.get('http://localhost:3001/cart');
+      const favoritesResponse = await axios.get('http://localhost:3001/favorite');
+      const itemsRsponse = await axios.get('http://localhost:3001/items');
 
-    axios.get('http://localhost:3001/items').then(res =>{
-      setItems(res.data);
-    });
-    axios.get('http://localhost:3001/cart').then(res =>{
-      setCartItems(res.data);
-    })
+      setIsLoading(false);
+      setItems(itemsRsponse.data);
+      setCartItems(cartItemsResponse.data);
+      setFavorites(favoritesResponse.data);
+    }
+
+    fetchData();
   }, [])
 
   const onAddToCart = (obj) =>{
-    axios.post('http://localhost:3001/cart', obj);
-    setCartItems(prev => [...prev,obj]);
+    try {
+      if(cartItems.find(item => Number(item.id) === Number(obj.id))){
+        axios.delete(`http://localhost:3001/cart/${obj.id}`);
+        setCartItems((prev) => prev.filter((item) => Number(item.id) != Number(obj.id))) 
+      }else{
+      axios.post('http://localhost:3001/cart', obj);
+      setCartItems(prev => [...prev,obj]);
+      }
+    } catch (error) {
+      alert('Не удалось добавить в корзину')
+    }
   };
 
   const onRemoveItem = (id) =>{
     axios.delete(`http://localhost:3001/cart/${id}`);
-    setCartItems(prev => prev.filter(item => item.id !== id ));
+    setCartItems((prev) => prev.filter((item) => item.id != id)) 
+  }
+
+  const onAddToFavorite = (obj) =>{
+    try {
+      if(favorite.find(faVobj => Number(faVobj.id) === Number(obj.id))){
+        axios.delete(`http://localhost:3001/favorite/${obj.id}`);
+        setFavorites(prev => prev.filter(item => Number(item.id) !== Number(obj.id)));
+      } else {
+        axios.post(`http://localhost:3001/favorite`, obj);
+        setFavorites(prev => [...prev,obj]);
+      }
+    } catch (error) {
+      alert('Не удалось добавить в избранное')
+    }
   }
 
   const onChangeSearchInput = (event) =>{
     setSearchValue(event.target.value);
   }
 
+  console.log(favorite);
   return (
+    <>
     <div className="wrapper clear">
 
-      {cartOpenned ? <Drawer items={cartItems} onClose ={() => setCartOpenned(false)} onRemove={onRemoveItem} /> : null}
+    {cartOpenned ? <Drawer items={cartItems} onClose ={() => setCartOpenned(false)} onRemove={onRemoveItem} /> : null}
 
       <Header onClickCart ={() => setCartOpenned(true)}/>
 
-      <div className="content p-40">
-        <div className="d-flex justify-between align-center mb-40">
-          <h1>{searchValue ? `Поиск по запросу: "${searchValue}"` : "Все кроссовки"}</h1>  
-          <div className="search-block d-flex">
-            <img src="/img/search.svg" alt="Search" />
-            {searchValue && <img onClick={() => setSearchValue('')} className="removeBtn cu-p clear" src="/img/btn-remove.svg" alt="Remove" />}
-            <input onChange={onChangeSearchInput} vlaue={searchValue} placeholder="Поиск...." />
-          </div>
-        </div>
-        
-
-        <div className="d-flex flex-wrap">
-
-          {items.filter(item=>item.title.toLowerCase().includes(searchValue.toLowerCase())).map((item, index) => (
-            <Card
-            title={item.title}
-            imageUrl={item.imageUrl}
-            price={item.price}
-            onPlus={(obj) => onAddToCart(obj)}
-            key={index}
+      <Routes>
+        <Route exact path="/" element={
+          <Home 
+            favorite={favorite}
+            cartItems={cartItems}
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
+            onChangeSearchInput={onChangeSearchInput}
+            items={items}
+            onAddToCart={onAddToCart}
+            onAddToFavorite={onAddToFavorite}
+            isLoading = {isLoading}
           />
-          ))}
+        } />
+        <Route path="/favorites" element={
+         <Favorites items={favorite} onAddToFavorite={onAddToFavorite}/>
+        } />
+      </Routes>
 
-        </div>
-      </div>
     </div>
+    </>
   );
 }
 
