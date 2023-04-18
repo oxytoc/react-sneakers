@@ -1,7 +1,11 @@
+import { useContext } from 'react';
+
 import Card from '../components/Card';
+import AppContext from '../context';
+
 function Home({
-    favorite,
-    cartItems,
+    // favorite,
+    // cartItems,
     searchValue,
     setSearchValue,
     onChangeSearchInput,
@@ -11,13 +15,17 @@ function Home({
     isLoading
 }) {
 
+  const {cartItems} = useContext(AppContext)
+  const {favorite} = useContext(AppContext)
+
+
+
   const renderItems = () => {
     const filterItems = items.filter(item=>item.title.toLowerCase().includes(searchValue.toLowerCase()));
-
     return(isLoading ? [...Array(10)] : filterItems).map((item, index) => (
       <Card
-        favorited={favorite.some(obj => Number(obj.id) === Number(item.id))}
-        added={cartItems.some(obj => Number(obj.id) === Number(item.id))} // если вернет хотя бы один обхет то передастся true
+        //favorited={favorite.some(obj => Number(obj.id) === Number(item.id))}
+      //  added={isItemAdded(item && item.id)} // если вернет хотя бы один обхет то передастся true
         onPlus={(obj) => onAddToCart(obj)}
         onFavorite={(obj) => onAddToFavorite(obj)}
         key={index}
@@ -27,7 +35,7 @@ function Home({
     ))
   }
     return(
-        <div className="content p-40">
+      <div className="content p-40">
         <div className="d-flex justify-between align-center mb-40">
           <h1>{searchValue ? `Поиск по запросу: "${searchValue}"` : "Все кроссовки"}</h1>  
           <div className="search-block d-flex">
