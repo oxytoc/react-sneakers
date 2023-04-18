@@ -37,7 +37,7 @@ function Drawer({onClose, onRemove, items = [], opened}) {
         <div className={`${styles.overlay} ${opened ? styles.overlayVisible : ''}`}>
             <div className={`${styles.drawer} p-30`}>
             <h2 className="d-flex justify-between mb-30">Корзина 
-            <img onClick={onClose} className="removeBtn cu-p" src="/img/btn-remove.svg" alt="Remove" /></h2>
+            <img onClick={onClose} className="removeBtn cu-p" src="img/btn-remove.svg" alt="Remove" /></h2>
 
             {
                 items.length > 0 ? 
@@ -50,7 +50,7 @@ function Drawer({onClose, onRemove, items = [], opened}) {
                             <p className="mb-5">{obj.title}</p>
                             <b>{obj.price} руб.</b>
                             </div>
-                            <img onClick={() => onRemove(obj.id)} className="removeBtn" src="/img/btn-remove.svg" alt="Remove"/>
+                            <img onClick={() => onRemove(obj.id)} className="removeBtn" src="img/btn-remove.svg" alt="Remove"/>
                         </div>
                     ))}
                     </div> 
@@ -68,23 +68,14 @@ function Drawer({onClose, onRemove, items = [], opened}) {
                             <b>{Math.floor(totalPrice * 0.05)} руб. </b>
                             </li>
                         </ul>
-                        <button disabled={isLoading} onClick={onClickOrder} className="greenButton">Оформить заказ <img src="/img/arrow.svg" alt="arrow" /></button>
+                        <button disabled={isLoading} onClick={onClickOrder} className="greenButton">Оформить заказ <img src="img/arrow.svg" alt="arrow" /></button>
                     </div>
                 </div>
                 : <Info 
                     title={isOrderComplete ? "Заказ оформлен!" : "Корзина пустая"}
                     description={isOrderComplete ?`Ваш заказ #${orderId} скоро будет передан курьерской доставке` : "Добавть хотя бы одну пару кроссовок, чтобы сделать заказ"}
-                    image={isOrderComplete ? "/img/order-processed.svg" : "/img/empty-cart.avif"}
+                    image={isOrderComplete ? "img/order-processed.svg" : "img/empty-cart.avif"}
                 />
-                // <div className="cartEmpty d-flex align-center justify-center flex-column flex">
-                //     <img src="/img/empty-cart.avif" alt="emptyCart" width={120} height={120} className="mb-20" />
-                //     <h2 className="text-center">Корзина пустая</h2>
-                //     <p className="opacity-6 text-center">Добавть хотя бы одну пару кроссовок, чтобы сделать заказ</p>
-                //     <button onClick={onClose} className="greenButton">
-                //         <img src="/img/arrow.svg" alt="arrow" />
-                //         Вернуться назад
-                //     </button>
-                // </div>
             }
 
         </div>

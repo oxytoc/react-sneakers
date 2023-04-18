@@ -1,11 +1,6 @@
-import { useContext } from 'react';
-
 import Card from '../components/Card';
-import AppContext from '../context';
 
 function Home({
-    // favorite,
-    // cartItems,
     searchValue,
     setSearchValue,
     onChangeSearchInput,
@@ -15,17 +10,10 @@ function Home({
     isLoading
 }) {
 
-  const {cartItems} = useContext(AppContext)
-  const {favorite} = useContext(AppContext)
-
-
-
   const renderItems = () => {
     const filterItems = items.filter(item=>item.title.toLowerCase().includes(searchValue.toLowerCase()));
     return(isLoading ? [...Array(10)] : filterItems).map((item, index) => (
       <Card
-        //favorited={favorite.some(obj => Number(obj.id) === Number(item.id))}
-      //  added={isItemAdded(item && item.id)} // если вернет хотя бы один обхет то передастся true
         onPlus={(obj) => onAddToCart(obj)}
         onFavorite={(obj) => onAddToFavorite(obj)}
         key={index}
@@ -39,8 +27,8 @@ function Home({
         <div className="d-flex justify-between align-center mb-40">
           <h1>{searchValue ? `Поиск по запросу: "${searchValue}"` : "Все кроссовки"}</h1>  
           <div className="search-block d-flex">
-            <img src="/img/search.svg" alt="Search" />
-            {searchValue && <img onClick={() => setSearchValue('')} className="removeBtn cu-p clear" src="/img/btn-remove.svg" alt="Remove" />}
+            <img src="img/search.svg" alt="Search" />
+            {searchValue && <img onClick={() => setSearchValue('')} className="removeBtn cu-p clear" src="img/btn-remove.svg" alt="Remove" />}
             <input onChange={onChangeSearchInput} vlaue={searchValue} placeholder="Поиск...." />
           </div>
         </div>

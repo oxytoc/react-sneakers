@@ -10,7 +10,7 @@ const {setCartOpenned} = React.useContext(AppContext);
         <h2 className="text-center">{title}</h2>
         <p className="opacity-6 text-center">{description}</p>
         <button onClick={() => setCartOpenned(false)} className="greenButton">
-            <img src="/img/arrow.svg" alt="arrow" />
+            <img src="img/arrow.svg" alt="arrow" />
             Вернуться назад
         </button>
     </div>
