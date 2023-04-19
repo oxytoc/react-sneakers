@@ -1,10 +1,8 @@
 import {useState, useEffect, useContext} from 'react';
 import Card from '../components/Card';
 import axios from 'axios';
-import AppContext from '../context';
 
 function Orders() {
-  const {onAddToCart, onAddToFavorite} = useContext(AppContext)
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -12,9 +10,8 @@ function Orders() {
   useEffect(() =>{
     ( async () =>{
       try {
-        const {data} = await axios.get('http://localhost:3001/orders')
+        const {data} = await axios.get('https://my-json-server.typicode.com/oxytoc/react-sneakers/orders')
         setOrders(data.map(obj => obj.items).flat())
-        console.log(data.map(obj => obj.items).flat());
         setIsLoading(false)
       } catch (error) {
         alert('Не удалось отобразить список покупок')

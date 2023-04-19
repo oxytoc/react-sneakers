@@ -61,8 +61,34 @@
       "id": 10
     }
   ],
-  "cart": [],
-  "favorite": [],
+  "cart": [
+    {
+      "title": "Мужские Кроссовки Nike Lebron XVIII Low",
+      "price": 13299,
+      "imageUrl": "img/sneakers/sn9.jpg",
+      "id": 9
+    },
+    {
+      "title": "Мужские Кроссовки Nike Lebron XVIII Low",
+      "price": 11299,
+      "imageUrl": "img/sneakers/sn10.jpg",
+      "id": 10
+    }
+  ],
+  "favorite": [
+    {
+      "title": "Мужские Кроссовки Nike Kyrie 7",
+      "price": 10799,
+      "imageUrl": "img/sneakers/sn7.jpg",
+      "id": 7
+    },
+    {
+      "title": "Мужские Кроссовки Nike LeBron XVIII",
+      "price": 16299,
+      "imageUrl": "img/sneakers/sn8.jpg",
+      "id": 8
+    }
+  ],
   "orders": [
     {
       "items": [

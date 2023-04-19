@@ -33,9 +33,6 @@ function App() {
           axios.get('https://my-json-server.typicode.com/oxytoc/react-sneakers/favorite'), 
           axios.get('https://my-json-server.typicode.com/oxytoc/react-sneakers/items')
         ]);
-        // const cartItemsResponse = await axios.get('http://localhost:3001/cart');
-        // const favoritesResponse = await axios.get('http://localhost:3001/favorite');
-        // const itemsRsponse = await axios.get('http://localhost:3001/items');
   
         setIsLoading(false);
         setItems(itemsRsponse.data);
@@ -53,10 +50,10 @@ function App() {
     try {
       if(cartItems.find(item => Number(item.id) === Number(obj.id))){
         setCartItems((prev) => prev.filter((item) => Number(item.id) !== Number(obj.id))) 
-        await axios.delete(`https://my-json-server.typicode.com/oxytoc/react-sneakers/cart/${obj.id}`);
+        // await axios.delete(`https://my-json-server.typicode.com/oxytoc/react-sneakers/cart/${obj.id}`);
       }else{
         setCartItems(prev => [...prev,obj]);
-        await axios.post('https://my-json-server.typicode.com/oxytoc/react-sneakers/cart', obj);
+        // await axios.post('https://my-json-server.typicode.com/oxytoc/react-sneakers/cart', obj);
       }
     } catch (error) {
       alert('Не удалось добавить в корзину');
@@ -67,7 +64,7 @@ function App() {
   const onRemoveItem = async (id) =>{
     try {
       setCartItems((prev) => prev.filter((item) => item.id !== id)) 
-      await axios.delete(`https://my-json-server.typicode.com/oxytoc/react-sneakers/cart/${id}`);
+      // await axios.delete(`https://my-json-server.typicode.com/oxytoc/react-sneakers/cart/${id}`);
     } catch (error) {
       alert('Не удалось удалить');
       console.error(error);
@@ -78,10 +75,10 @@ function App() {
     try {
       if(favorite.find(faVobj => Number(faVobj.id) === Number(obj.id))){
         setFavorites(prev => prev.filter(item => Number(item.id) !== Number(obj.id)));
-        await axios.delete(`https://my-json-server.typicode.com/oxytoc/react-sneakers/favorite/${obj.id}`);
+        // await axios.delete(`https://my-json-server.typicode.com/oxytoc/react-sneakers/favorite/${obj.id}`);
       } else {
         setFavorites(prev => [...prev,obj]);
-        await axios.post(`https://my-json-server.typicode.com/oxytoc/react-sneakers/favorite`, obj);
+        // await axios.post(`https://my-json-server.typicode.com/oxytoc/react-sneakers/favorite`, obj);
       }
     } catch (error) {
       alert('Не удалось добавить в избранное')
@@ -106,15 +103,13 @@ function App() {
       <>
         <div className="wrapper clear">
 
-        <Drawer items={cartItems} onClose ={() => setCartOpenned(false)} onRemove={onRemoveItem} opened={cartOpenned} />
+          <Drawer items={cartItems} onClose ={() => setCartOpenned(false)} onRemove={onRemoveItem} opened={cartOpenned} />
 
           <Header onClickCart ={() => setCartOpenned(true)}/>
 
           <Routes>
-            <Route exact path="" element={
+            <Route exact path="/" element={
               <Home 
-                // favorite={favorite}
-                // cartItems={cartItems}
                 searchValue={searchValue}
                 setSearchValue={setSearchValue}
                 onChangeSearchInput={onChangeSearchInput}
